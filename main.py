@@ -1,4 +1,4 @@
-from document_indexer import IndexerSettings, run
+from document_indexer import DocumentIndexer, ProfileSmb
 
 if __name__ == "__main__":
-    run(IndexerSettings())
+    DocumentIndexer(ProfileSmb()).run()
