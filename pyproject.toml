@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smb-reindex"
+version = "0.1.0"
+description = "SMB indexer profile for document-indexer"
+requires-python = ">=3.12"
+dependencies = [
+    "document-indexer[docling,smb] @ file:../document_indexer",
+]
+
+[tool.setuptools]
+py-modules = ["main"]
