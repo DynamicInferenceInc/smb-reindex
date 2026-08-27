@@ -6,9 +6,9 @@ Resume-профиль `document-indexer` для SMB-шары. Файлы зер�
 Разница с `local-reindex` только в источнике: `ProfileSmb` вместо
 `ProfileLocal`. Схема, builder и LLM те же.
 
-## Docker
+VPN индексатор не поднимает: TCP/445 до шары должен быть уже доступен.
 
-Из корня `core-reindex`:
+## Зависимости
 
 ```bash
 cp smb-reindex/.env.example smb-reindex/.env
@@ -48,6 +48,24 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install --index-url https://download.pytorch.org/whl/cpu torch torchvision
 pip install -e .
-cp .env.example .env
 python main.py
+```
+
+Первый цикл синхронизирует шару в staging и делает полный `index`. Дальше —
+polling и инкрементальные `index(..., changes)`.
+
+Логи: `tail -f indexer.log`, если процесс запущен с `tee`, либо stdout `python main.py`.
+
+## Docker
+
+Образ собирается поверх `document-indexer`. Из контейнера Qdrant/Ollama обычно
+доступны как `http://host.docker.internal:6333` и `:11434`.
+
+`SOURCE__STAGING_PATH` в `.env` должен совпадать с томом staging в compose.
+
+```bash
+cp .env.example .env
+# заполните учётные данные SMB
+docker compose up -d --build smb-reindex
+docker compose logs -f smb-reindex
 ```
