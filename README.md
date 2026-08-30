@@ -28,7 +28,7 @@ docker compose logs -f smb-reindex
 VPN индексатор не поднимает: TCP/445 до шары должен быть доступен из
 контейнера.
 
-Коллекция `docs-cv`, версия `resume-v15`. Смена схемы — bump
+Коллекция `docs-cv`, версия `resume-v18`. Смена схемы — bump
 `QDRANT__INDEX_VERSION` или новая коллекция.
 
 `MODELS__EXTRACTION_MODEL` — text LLM (`qwen3:8b`), не VLM. Пустая строка =
