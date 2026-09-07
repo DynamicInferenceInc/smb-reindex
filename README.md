@@ -45,7 +45,7 @@ VPN индексатор не поднимает: TCP/445 до шары долж
 `SOURCE__MAX_DEPTH` уровней папок и индексирует `CHUNKING__STRATEGY=hybrid`:
 чанки как у официального Docling HybridChunker, картинки описывает VLM
 (`MODELS__PICTURE_DESCRIPTION_ENABLED=true`, коллекция `docs-hybrid`,
-версия `hybrid-v2`). В payload пишется `direction` — имя папки файла
+версия `hybrid-v3`). В payload пишется `direction` — имя папки файла
 (`Проекты/Бухгалтерия/акт.docx` → `Бухгалтерия`).
 
 Пример: `smb://pers.local/common/Проекты` → в `.env.hybrid`:
