@@ -39,6 +39,29 @@ VPN индексатор не поднимает: TCP/445 до шары долж
 Коллекция `docs-cv`, версия `resume-v20` (переиндексирует все резюме). Смена
 схемы — bump `QDRANT__INDEX_VERSION` или новая коллекция.
 
+## Hybrid: один уровень SMB + Docling HybridChunker
+
+Отдельный сервис `smb-hybrid` (тот же образ). Копирует с шары только
+`SOURCE__MAX_DEPTH` уровней папок и индексирует `CHUNKING__STRATEGY=hybrid`:
+чанки как у официального Docling HybridChunker, картинки описывает VLM
+(`MODELS__PICTURE_DESCRIPTION_ENABLED=true`, коллекция `docs-hybrid`,
+версия `hybrid-v2`). В payload пишется `direction` — имя папки файла
+(`Проекты/Бухгалтерия/акт.docx` → `Бухгалтерия`).
+
+Пример: `smb://pers.local/common/Проекты` → в `.env.hybrid`:
+`SOURCE__SERVER=pers.local`, `SOURCE__SHARE=common`, `SOURCE__SUBPATH=Проекты`,
+`SOURCE__MAX_DEPTH=1`. Попадёт `Проекты/Alpha/spec.pdf`, не попадёт
+`Проекты/Alpha/docs/deep.pdf`.
+
+```bash
+cp .env.hybrid.example .env.hybrid
+# SOURCE__STAGING_PATH=/data/staging-hybrid  (= SMB_HYBRID_STAGING_CONTAINER)
+ollama pull nomic-embed-text
+ollama pull qwen3-vl:8b
+docker compose --profile hybrid up -d --build smb-hybrid
+docker compose logs -f smb-hybrid
+```
+
 `MODELS__EXTRACTION_MODEL` — text LLM (`qwen3.8:27b-q8_0`), не VLM. Пустая
 строка = только парсер: резюме без проектов уйдут в `prose` с `needs_review`.
 Шаги LLM включаются `RESUME__LLM_PROJECTS` / `RESUME__LLM_REFINE` /
