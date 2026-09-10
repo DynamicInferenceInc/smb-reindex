@@ -53,6 +53,9 @@ VPN индексатор не поднимает: TCP/445 до шары долж
 `SOURCE__MAX_DEPTH=1`. Попадёт `Проекты/Alpha/spec.pdf`, не попадёт
 `Проекты/Alpha/docs/deep.pdf`.
 
+`SOURCE__INCLUDE` — JSON-массив имён (или путей от `SUBPATH`). Пустой = все
+файлы, которые проходят `INDEX_EXTENSIONS` и `MAX_DEPTH`.
+
 Чтобы дописать другую папку в ту же коллекцию, оставьте `QDRANT__COLLECTION`
 и поставьте `QDRANT__PRUNE_MISSING=false`. Иначе полный reindex удалит точки,
 которых нет в новом `SOURCE__SUBPATH`. Лучше новый `SOURCE__STAGING_PATH`
