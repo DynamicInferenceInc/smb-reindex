@@ -53,6 +53,12 @@ VPN индексатор не поднимает: TCP/445 до шары долж
 `SOURCE__MAX_DEPTH=1`. Попадёт `Проекты/Alpha/spec.pdf`, не попадёт
 `Проекты/Alpha/docs/deep.pdf`.
 
+Чтобы дописать другую папку в ту же коллекцию, оставьте `QDRANT__COLLECTION`
+и поставьте `QDRANT__PRUNE_MISSING=false`. Иначе полный reindex удалит точки,
+которых нет в новом `SOURCE__SUBPATH`. Лучше новый `SOURCE__STAGING_PATH`
+(и том compose), чтобы зеркала не смешивались. `source_path` считается от
+`SUBPATH`: одинаковые относительные пути в двух папках перезапишут друг друга.
+
 ```bash
 cp .env.hybrid.example .env.hybrid
 # SOURCE__STAGING_PATH=/data/staging-hybrid  (= SMB_HYBRID_STAGING_CONTAINER)
